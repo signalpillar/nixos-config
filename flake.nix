@@ -19,6 +19,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    emacs-overlay.url = "github:nix-community/emacs-overlay/47798c4ab07d5f055bb2625010cf6d8e3f384923";
+
     darwin = {
       url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -50,6 +52,7 @@
     overlays = [
       inputs.neovim-nightly-overlay.overlay
       inputs.zig.overlays.default
+      inputs.emacs-overlay.overlay
     ];
 
     mkSystem = import ./lib/mksystem.nix {
@@ -58,33 +61,33 @@
   in {
     nixosConfigurations.vm-aarch64 = mkSystem "vm-aarch64" {
       system = "aarch64-linux";
-      user   = "mitchellh";
+      user   = "signalpillar";
     };
 
     nixosConfigurations.vm-aarch64-prl = mkSystem "vm-aarch64-prl" rec {
       system = "aarch64-linux";
-      user   = "mitchellh";
+      user   = "signalpillar";
     };
 
     nixosConfigurations.vm-aarch64-utm = mkSystem "vm-aarch64-utm" rec {
       system = "aarch64-linux";
-      user   = "mitchellh";
+      user   = "signalpillar";
     };
 
     nixosConfigurations.vm-intel = mkSystem "vm-intel" rec {
       system = "x86_64-linux";
-      user   = "mitchellh";
+      user   = "signalpillar";
     };
 
     nixosConfigurations.wsl = mkSystem "wsl" {
       system = "x86_64-linux";
-      user   = "mitchellh";
+      user   = "signalpillar";
       wsl    = true;
     };
 
     darwinConfigurations.macbook-pro-m1 = mkSystem "macbook-pro-m1" {
       system = "aarch64-darwin";
-      user   = "mitchellh";
+      user   = "signalpillar";
       darwin = true;
     };
   };

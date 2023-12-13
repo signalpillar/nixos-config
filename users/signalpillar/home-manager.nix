@@ -124,8 +124,7 @@ in {
     config = {
       whitelist = {
         prefix= [
-          "$HOME/code/go/src/github.com/hashicorp"
-          "$HOME/code/go/src/github.com/mitchellh"
+          "$HOME/code/go/src/github.com/signalpillar"
         ];
 
         exact = ["$HOME/.envrc"];
@@ -172,12 +171,12 @@ in {
 
   programs.git = {
     enable = true;
-    userName = "Mitchell Hashimoto";
-    userEmail = "mitchell.hashimoto@gmail.com";
-    signing = {
-      key = "523D5DC389D273BC";
-      signByDefault = true;
-    };
+    userName = "Volodymyr Vitvitskyi";
+    userEmail = "72226+signalpillar@users.noreply.github.com";
+    # signing = {
+    #   key = "523D5DC389D273BC";
+    #   signByDefault = true;
+    # };
     aliases = {
       cleanup = "!git branch --merged | grep  -v '\\*\\|master\\|develop' | xargs -n 1 -r git branch -d";
       prettylog = "log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(r) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative";
@@ -188,7 +187,7 @@ in {
       color.ui = true;
       core.askPass = ""; # needs to be empty to use terminal for ask pass
       credential.helper = "store"; # want to make this more secure
-      github.user = "mitchellh";
+      github.user = "signalpillar";
       push.default = "tracking";
       init.defaultBranch = "main";
     };
@@ -197,16 +196,58 @@ in {
   programs.go = {
     enable = true;
     goPath = "code/go";
-    goPrivate = [ "github.com/mitchellh" "github.com/hashicorp" "rfc822.mx" ];
+    goPrivate = [ "github.com/signalpillar" ];
   };
 
   programs.tmux = {
     enable = true;
     terminal = "xterm-256color";
-    shortcut = "l";
     secureSocket = false;
 
     extraConfig = ''
+      # Lowers the delay time between the prefix key and other keys - fixes pausing in vim
+      # taken from https://gist.github.com/NickLaMuro/1687643
+      set -sg escape-time 1
+
+      set-window-option -g mode-keys vi
+
+      # scrollback buffer n lines
+      set -g history-limit 10000
+
+      # Pane resize in all four directions using vi bindings.
+      set-option -g mouse on
+
+      # Open a new window and pane with the PWD of the pane where creation was initiated
+      bind '"' split-window -c "#{pane_current_path}"
+      bind % split-window -h -c "#{pane_current_path}"
+      bind c new-window -c "#{pane_current_path}"
+
+      # Use vim keybindings in copy mode
+      setw -g mode-keys vi
+
+      # vim-like pane switching
+      bind -r k select-pane -U
+      bind -r j select-pane -D
+      bind -r h select-pane -L
+      bind -r l select-pane -R
+
+      # Setup 'v' to begin selection as in Vim
+      bind-key -T copy-mode-vi 'v' send -X begin-selection
+
+      bind-key -T copy-mode-vi 'y' send -X copy-pipe "xclip -in -selection clipboard"
+
+      # Update default binding of `Enter` to also use copy-pipe
+      unbind -T copy-mode-vi Enter
+
+      bind-key          S choose-window "join-pane -v -s "%%""
+      bind-key          V choose-window "join-pane -h -s "%%""
+      bind-key          l last-window
+
+      # set window notifications
+      set-option -g visual-activity on
+      set-window-option -g monitor-activity on
+      set-window-option -g automatic-rename off
+
       set -ga terminal-overrides ",*256col*:Tc"
 
       set -g @dracula-show-battery false
@@ -257,6 +298,11 @@ in {
       "wireless _first_".enable = false;
       "battery all".enable = false;
     };
+  };
+
+  programs.emacs = {
+    enable = true;
+    package = pkgs.emacs29;
   };
 
   programs.neovim = {

@@ -10,15 +10,15 @@
   # Since we're using fish as our shell
   programs.fish.enable = true;
 
-  users.users.mitchellh = {
+  users.users.signalpillar = {
     isNormalUser = true;
-    home = "/home/mitchellh";
-    extraGroups = [ "docker" "wheel" ];
+    home = "/home/signalpillar";
+    extraGroups = [ "docker" "wheel"
+                    # plugdev is required to access USB devices
+                    "plugdev"];
     shell = pkgs.fish;
-    hashedPassword = "$6$p5nPhz3G6k$6yCK0m3Oglcj4ZkUXwbjrG403LBZkfNwlhgrQAqOospGJXJZ27dI84CbIYBNsTgsoH650C1EBsbCKesSVPSpB1";
-    openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIGbTIKIPtrymhvtTvqbU07/e7gyFJqNS4S0xlfrZLOaY mitchellh"
-    ];
+    hashedPassword = "$6$.aC5ISqifnS05uCU$RHM18.xGqsmqaGm.bCLGcgHPKPgF7TduNba/zwT6ZmiQ74LenlPoDe8TE7C5I7OnL5aq77EgTJDAgZr4zcwbm1";
+    openssh.authorizedKeys.keys = [];
   };
 
   nixpkgs.overlays = import ../../lib/overlays.nix ++ [
