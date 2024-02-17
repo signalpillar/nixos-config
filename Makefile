@@ -21,6 +21,7 @@ ifeq ($(UNAME), Darwin)
 	nix build --extra-experimental-features nix-command --extra-experimental-features flakes ".#darwinConfigurations.${NIXNAME}.system"
 	./result/sw/bin/darwin-rebuild switch --flake "$$(pwd)#${NIXNAME}"
 else
+	# sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}" --option eval-cache false
 	sudo NIXPKGS_ALLOW_UNSUPPORTED_SYSTEM=1 nixos-rebuild switch --flake ".#${NIXNAME}"
 endif
 
@@ -68,7 +69,7 @@ vm/bootstrap0:
 			nix.extraOptions = \"experimental-features = nix-command flakes\";\n \
 			nix.settings.substituters = [\"https://mitchellh-nixos-config.cachix.org\"];\n \
 			nix.settings.trusted-public-keys = [\"mitchellh-nixos-config.cachix.org-1:bjEbXJyLrL1HZZHBbO4QALnI5faYZppzkU4D2s0G8RQ=\"];\n \
-  			services.openssh.enable = true;\n \
+			services.openssh.enable = true;\n \
 			services.openssh.settings.PasswordAuthentication = true;\n \
 			services.openssh.settings.PermitRootLogin = \"yes\";\n \
 			users.users.root.initialPassword = \"root\";\n \

@@ -45,6 +45,7 @@ in {
 
     # Node is required for Copilot.vim
     pkgs.nodejs
+    pkgs.python311  #.withPackages(ps:  with ps; [pytest])
   ] ++ (lib.optionals isDarwin [
     # This is automatically setup on Linux
     pkgs.cachix

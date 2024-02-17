@@ -79,7 +79,7 @@ in {
   } else {
     enable = true;
     layout = "us";
-    dpi = 220;
+    dpi = 100;
 
     desktopManager = {
       xterm.enable = false;
