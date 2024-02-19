@@ -367,7 +367,7 @@ in {
   home.pointerCursor = lib.mkIf (isLinux && !isWSL) {
     name = "Vanilla-DMZ";
     package = pkgs.vanilla-dmz;
-    size = 128;
+    size = 32;
     x11.enable = true;
   };
 }
